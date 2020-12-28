@@ -379,7 +379,7 @@ You'll also have to make sure your bundler doesn't inline `foo-node.js` into
 Depending on your bundler, or any assumptions you can make about the
 bundlers/environments used by the code that calls your library, you may be able
 to simplify some of this. However, this kind of code is often handled
-differently based on bundler heuristics and/or plugins.
+differently based on bundler heuristics and/or plugins. Some bundlers (e.g. `snowpack`) will emit errors even if the `node` imports are in code paths unused by any browser.
 
 It's also possible to build different versions of your code for browsers and
 `node`, but the relevant `package.json` for this
