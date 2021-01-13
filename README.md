@@ -4,7 +4,7 @@ Lucas Garron
 2020-12-28
 
 This document summarizes my main issues with web worker compatibility, from
-almsot 8 years of working with web workers and from building the
+almost 8 years of working with web workers and from building the
 [`scrambles`](https://github.com/cubing/jsss/tree/scrambles/src/scrambles/worker)
 library in particular.
 
