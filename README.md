@@ -26,7 +26,7 @@ writing a library for it:
 ```js
 // foo.js
 
-export async function calculateFoo(input) {
+export function calculateFoo(input) {
   // about 1 second of work
 }
 ```
