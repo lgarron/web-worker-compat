@@ -209,14 +209,14 @@ liveness check or timeouts, but this complicates the calling code and requires
 selecting a timeout that doesn't cause false negatives. (Selecting a flat
 timeout can be an issue for calculations that fluctuate in running time.)
 
-## **Problem 3**: Messages have to be serialized
+## **Problem 4**: Messages have to be serialized
 
 Everyone writing web worker code has to select their own way to serialize command
 and arguments over the wire. The
 [Transferable](https://developer.mozilla.org/en-US/docs/Web/API/Transferable)
 interface can make this easier, but it doesn't work for everything.
 
-## **Problem 4** It's not simple to wrap `MessagePort` in `Promise` semantics.
+## **Problem 5** It's not simple to wrap `MessagePort` in `Promise` semantics.
 
 The code example above with `pendingResolve` has various issues::
 
@@ -235,12 +235,12 @@ existing APIs. However, it is significantly easier to use modules as the
 conceptual basis for an API instead of requiring every developer to learn
 something new.
 
-## **Problem 5**: Static analysis and type safety are significantly more difficult.
+## **Problem 6**: Static analysis and type safety are significantly more difficult.
 
 The previous two problems make it much more difficult to write code that can be
 statically verified to do the right thing, by either a computer or a human.
 
-## **Problem 6**: Web workers cannot be instantiated cross-origin.
+## **Problem 7**: Web workers cannot be instantiated cross-origin.
 
 While `import` runs code in the same origin as its caller, a web worker runs
 with the origin of its URL. Instantiating a worker whose URL has a different
@@ -290,7 +290,7 @@ Also, dynamically generating code is not generally a good idea. If `workerURL`
 is not defined as a safe, constant string, an attacker could easily inject
 arbitrary code into the trampoline.
 
-## **Problem 7**: Calculating relative paths requires `import.meta.url`
+## **Problem 8**: Calculating relative paths requires `import.meta.url`
 
 Notice that the full worker URL is hardcoded inside `foo.js` in the previous example. This
 is because the instantiated worker cannot itself compute a URL relative to its
@@ -320,7 +320,7 @@ transpile other syntax (`??=`) that will cause a syntax error in some browsers.
 There are ways around this with most bundlers, but it's possible that a
 developer would not notice this if they only develop in a single browser.
 
-## **Problem 8**: `node` doesn't support relative paths
+## **Problem 9**: `node` doesn't support relative paths
 
 Suppose you want your library to work in `node` (as well as the browsers) and publish the following two files in the same folder:
 
@@ -388,7 +388,7 @@ Also, many libraries already publish CJS/ESM and/or raw/minified/bundled-depende
 versions of their code, so this can contribute to an explosion in the number of
 builds for a library, which can in turn bloat the package size.
 
-## **Problem 9**: `node` workers differ from browsers
+## **Problem 10**: `node` workers differ from browsers
 
 `node` workers actually do not have the same semantics as browser workers.
 Depending on the `MessagePort` features you use, you may need extra code to
@@ -401,7 +401,7 @@ in the `comlink` library.
 CJS/ESM. This means that you also need your code/build system/bundler to switch between two of the
 build files manually.)
 
-## **Problem 10**: TypeScript development often requires an extra wrapper
+## **Problem 11**: TypeScript development often requires an extra wrapper
 
 Suppose you maintain a library using TypeScript source code. The most natural
 would be to write the worker source in TypeScript as well:
@@ -428,7 +428,7 @@ a pure stub wrapper for typed files, it can mask type issues in your code. As
 described above, this doesn't always show up as an error, and can be annoying to
 debug.
 
-## **Problem 10**: Many bundlers break with workers
+## **Problem 12**: Many bundlers break with workers
 
 Bundlers often require plugins to work with workers, which can be
 under-maintaned and undersupported. Even bundlers that claim built-in support
