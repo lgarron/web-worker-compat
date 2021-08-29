@@ -158,7 +158,7 @@ of the codebase.
 
 Chrome implemented this [in 2019](https://web.dev/module-workers/). As of mid-2021, Safari Technology Preview has support, so this will probably come to WebKit on macOS and iOS soon. Unfortunately, [Firefox Bug
 1247687](https://bugzilla.mozilla.org/show_bug.cgi?id=1247687) is not showing a lot of activity. I'm not aware of a simple way to test
-for module worker support before trying to use it — the closest option is try/catch.
+for module worker support before trying to use it — the closest option is to try/catch the worker instantiation and live with an error in the JS console when it fails.
 
 If a site wants to use web workers across all modern browsers, it has to use a
 "classic" web worker. You can still "import" code instead of loading it all at
@@ -219,7 +219,7 @@ interface can make this easier, but it doesn't work for everything.
 
 ## **Problem 5** It's not simple to wrap `MessagePort` in `Promise` semantics.
 
-The code example above with `pendingResolve` has various issues::
+The code example above with `pendingResolve` has various issues:
 
 - If `calculateFoo()` is called twice in a row, the first call will never be
   resolved.
