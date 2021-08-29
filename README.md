@@ -164,9 +164,12 @@ If a site wants to use web workers across all modern browsers, it has to use a
 "classic" web worker. You can still "import" code instead of loading it all at
 once, but you have to use the completely different
 [`importScripts()`](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts)
-which essentially requires communicating
-with global variables. I think some bundlers have basic support for this, but
-sharing code across workers and non-workers is definitely not simple.
+which essentially requires communicating with global variables. I think some
+bundlers have basic support for this, but sharing code across workers and
+non-workers is definitely not simple. The simplest approach is to keep the
+worker code separate from non-worker code, but this still causes extra
+development overhead, is harder to debug, and might cause clients to load a
+significant amount of "duplicated" code.
 
 ## **Problem 2**: Keeping track of an extra entry point
 
