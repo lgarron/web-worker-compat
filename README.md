@@ -263,7 +263,7 @@ web workers in flat-file
 development](https://github.com/lgarron/MagicWorker.js), but I had to give that
 up when I started using TypeScript and modules. It's probably a moot point for
 most devs, but I still feel disappointed. (Running a local development server is
-not simple for everyone. Unfortunately, it seems that most project have said "if we have to
+not simple for everyone. Unfortunately, it seems that most projects have said "if we have to
 run a dev server, we might as well use a bundler" with tens of thousands of transitive
 dependency files. I think we should push the ecosystem away from this in the
 long term.)
