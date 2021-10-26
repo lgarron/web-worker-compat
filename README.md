@@ -275,7 +275,7 @@ instantiating an ugly but fairly short "trampoline":
 ```js
 // https://cdn.cubing.net/foo.js
 
-const workerURL = "https://cdn.cubing.net/worker.js";
+const workerURL = new URL("./worker.js", import.meta.url);
 const importSrc = `import "${workerURL}";`;
 const blob = new Blob([importSrc], {
   type: "text/javascript",
@@ -288,7 +288,7 @@ Note that this requires the site to allow `blob:` as a [`worker-src`](https://de
 using CSP.
 
 Also, dynamically generating code is not generally a good idea. If `workerURL`
-is not defined as a safe, constant string, an attacker could easily inject
+is not calculated safely, an attacker could easily inject
 arbitrary code into the trampoline.
 
 ## **Problem 8**: Calculating relative paths requires `import.meta.url`
