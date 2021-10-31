@@ -275,7 +275,7 @@ instantiating an ugly but fairly short "trampoline":
 ```js
 // https://cdn.cubing.net/foo.js
 
-const workerURL = new URL("./worker.js", import.meta.url);
+const workerURL = "https://example.com/worker.js";
 const importSrc = `import "${workerURL}";`;
 const blob = new Blob([importSrc], {
   type: "text/javascript",
