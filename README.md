@@ -493,3 +493,29 @@ For now, it would be nice if a library author could instantiate a worker a
 single way in their source code, and have bundlers convert that into code that
 is compatible with CJS/ESM/`node`/browser environments _without_ any special
 work on behalf of the author.
+
+# State of web worker compatibility in Jan. 2023
+
+Out-of-the-box support for the following syntax is implemented in all modern browser engines (Chrome stable, Safari Technology Preview, Firefox Nightly) as of this month! 😻🥳
+```js
+// main.js
+const worker = new Worker(import.meta.resolve("./worker.js"), {type: "module"})
+worker.addEventListener("message", console.log)
+
+// worker.js
+self.postMessage("hello!")
+```
+
+However:
+- `import.meta.resolve(...)`
+  - `import.meta.resolve(...)` is implemented in Safari Technology Preview and enabled by default, but it is not possible to enable in the stable version of Safari 16.2. However, it is possible to polyfill using: `import.meta.resolve = (s) => new URL(s, import.meta.url).href;`
+  - [Some bundlers will break code](https://github.com/evanw/esbuild/issues/2866) with this syntax. 
+  - `new URL(..., import.meta.url).href` can be used for older browsers and most JS libraries/apps should probably ship this syntax instead of `import.meta.resolve(...)` for now, but [some bundlers will also break code](https://github.com/evanw/esbuild/issues/312) with this syntax.
+- Firefox
+  - `{type: "module"}` [only just landed](https://bugzilla.mozilla.org/show_bug.cgi?id=1247687) in Firefox Nightly (after being landing one before and being backed out).
+  - Firefox still needs [support for dynamic imports in module workers](https://bugzilla.mozilla.org/show_bug.cgi?id=1540913).
+- `node`
+  - `node` has a worker API, but it's sufficiently incompatible with web workers that you can't just write browser code and expect it to work in `node`. The `node` authors [seem open to a community contribution to add web-compatible workers](https://github.com/nodejs/node/issues/43583).
+  - `node` 19.4 only [just added `import.meta.resolve`](https://nodejs.org/api/esm.html#importmetaresolvespecifier-parent) behind an experimental flag, but it returns a `Promise`, which is perfectly poised to introduce subtle bugs to the ecosystem if it ships unflagged. They have [begun work to support a synchronous version](https://github.com/whatwg/html/pull/5572#issuecomment-1041876685).
+- Cross-origin workers
+  - We still need [`BlankWorker`](https://github.com/whatwg/html/issues/6911) or [module blocks](https://github.com/tc39/proposal-module-expressions) to avoid a [gnarly trampoline](https://github.com/lgarron/web-worker-compat-problems#problem-7-web-workers-cannot-be-instantiated-cross-origin) for libraries running on a CDN origin.
